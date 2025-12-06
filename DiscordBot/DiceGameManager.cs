@@ -53,8 +53,9 @@ public class DiceGameManager
         switch (current_phase)
         {
             case GamePhase.PHASE_STANDBY:
+                ResetGame();    //Safeguard to avoid duplicate players
                 await command.RespondAsync($"{command.User.GlobalName} új kockajátékot indítiott! A cél {pts} pont elérése", components: lobbyBuilder.Build());
-                Player player = new Player                            // Ez itt elvileg nem duplikálhatja a playert később, mivel amint lefut, phase-t váltunk, és onnantól már ellenőrzi, csatlakozott-e
+                Player player = new Player                            // Ez itt elvileg nem duplikálhatja a playert később, de volt már rá példa.
                 {
                     name = command.User.GlobalName,
                     gathering = 0,
@@ -94,22 +95,30 @@ public class DiceGameManager
     }
     public static async Task OnDiceStartButtonClicked(SocketMessageComponent component)
     {
-        if(players.Count > 1 || players.Count == 1)
+        if(current_phase == GamePhase.PHASE_CREATING_LOBBY)
         {
-            activePlayer = rng.Next(0, players.Count);
-            current_phase = GamePhase.PHASE_PLAYING;
-            
-            await component.Message.ModifyAsync(msg =>
+            if((players.Count > 1 || players.Count == 1))
             {
-                msg.Content = $"Kezdődik a kocskajáték!\nA játékot {players[activePlayer].name} kezdi";
-                msg.Components = gameBuilder.Build();
-            });
-            await component.DeferAsync();
+                activePlayer = rng.Next(0, players.Count);
+                current_phase = GamePhase.PHASE_PLAYING;
+                
+                await component.Message.ModifyAsync(msg =>
+                {
+                    msg.Content = $"Kezdődik a kocskajáték!\nA játékot {players[activePlayer].name} kezdi";
+                    msg.Components = gameBuilder.Build();
+                });
+                await component.DeferAsync();
+            }
+            else
+            {
+                await component.RespondAsync($"Még nincs elegendő játékos az indításhoz", ephemeral: true);
+            }
         }
         else
         {
-            await component.RespondAsync($"Még nincs elegendő játékos az indításhoz", ephemeral: true);
+            await component.RespondAsync("$Nincs folyamatban kockajáték. Indíts egy újat a /dice paranccsal.", ephemeral: true);
         }
+        
     }
     public static async Task OnDiceThrowButtonClicked(SocketMessageComponent component)
     {
@@ -249,4 +258,5 @@ public class DiceGameManager
             }
         }
     }
+
 }
