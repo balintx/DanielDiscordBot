@@ -28,6 +28,8 @@ public class CommandHandler
                 await command.RespondAsync(embed: HealthHandler.CheckBMI(height, weight).Build()); break;
             case "coldest":
                 await command.RespondAsync(WeatherHandler.GetColdestTemperature((string)command.Data.Options.First().Value)); break;
+            case "daylight":
+                await command.RespondAsync(embed: WeatherHandler.GetDaylightTime((string)command.Data.Options.First().Value).Build()); break;
             case "dice":
                 if (command.Data.Options.Count > 0)
                 {

@@ -158,17 +158,41 @@ public class WeatherHandler
             .WithFooter($"Érvényesség: {stamp} + 3 óra");
         return response;
     }
-
+    public static EmbedBuilder? GetDaylightTime(string city)
+    {
+        string json;// = Weather.GetForecastJson(city);             //TODO: Rework into a more generic solution
+        try
+        {
+            json = Weather.GetCurrentWeatherJson(city);
+        }
+        catch (System.Net.WebException)
+        {
+            return new EmbedBuilder().WithDescription("Nincs ilyen város");
+        }
+        JsonDocument jsondoc = JsonDocument.Parse(json);
+        JsonElement root = jsondoc.RootElement;
+        int timezoneDelta = Convert.ToInt32(root.GetProperty("timezone").GetInt32());
+        Location location = new Location();
+        location.Name = root.GetProperty("name").ToString() ?? city;
+        location.Sunrise = Convert.ToDouble(root.GetProperty("sys").GetProperty("sunrise").GetDouble()) + timezoneDelta - 3600;              //API dokumentáció szerint UTC időt ad vissza, gyakorlatilag viszont CET-t
+        location.Sunset = Convert.ToDouble(root.GetProperty("sys").GetProperty("sunset").GetDouble()) + timezoneDelta - 3600;
+        var response = new EmbedBuilder()
+            .WithTitle($"Napsütéses időszak {location.Name} területén")
+            .WithDescription($"Napkelte: {Utilities.Timestamp2ShortString(location.Sunrise)}\nNapnyugta: {Utilities.Timestamp2ShortString(location.Sunset)}");
+        return response;
+    }
     private class Location
     {
         public string? Name { get; set; }
         public string? Weather { get; set; }
         public int Temperature { get; set; }
         public int Humidity { get; set;}
-        public double WindSpeed { get; set; }
+        public double? WindSpeed { get; set; }
         public string? WindDirection { get; set; }
         public string? Icon { get; set; }
         public string? WindForecast { get; set; }
+        public double Sunrise { get; set; }
+        public double Sunset { get; set; }
     }
 
     public static string GetWindDirString(int deg)

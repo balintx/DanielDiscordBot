@@ -53,6 +53,11 @@ class Program
             .WithType(ApplicationCommandOptionType.String)
             .WithDescription("településnév")
             .WithRequired(true));
+        await CommandHandler.RegisterCommand("daylight", "Megadja a napsütéses időszakot az adott napon", new SlashCommandOptionBuilder()
+            .WithName("település")
+            .WithType(ApplicationCommandOptionType.String)
+            .WithDescription("településnév")
+            .WithRequired(true));
         await CommandHandler.RegisterCommand("dice", "Kockajáték indítása", new SlashCommandOptionBuilder()
             .WithName("target")
             .WithType(ApplicationCommandOptionType.Integer)
