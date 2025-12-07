@@ -97,7 +97,7 @@ public class DiceGameManager
     {
         if(current_phase == GamePhase.PHASE_CREATING_LOBBY)
         {
-            if((players.Count > 1 || players.Count == 1))
+            if(players.Count >= 1)
             {
                 activePlayer = rng.Next(0, players.Count);
                 current_phase = GamePhase.PHASE_PLAYING;
