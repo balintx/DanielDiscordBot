@@ -187,7 +187,7 @@ public class WeatherHandler
         public string? Weather { get; set; }
         public int Temperature { get; set; }
         public int Humidity { get; set;}
-        public double? WindSpeed { get; set; }
+        public double WindSpeed { get; set; }
         public string? WindDirection { get; set; }
         public string? Icon { get; set; }
         public string? WindForecast { get; set; }
