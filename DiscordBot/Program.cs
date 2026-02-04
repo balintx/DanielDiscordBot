@@ -36,7 +36,7 @@ class Program
         await Task.Delay(-1);
     }
 
-    public async Task HandleMessageAsync(SocketMessage message)
+    private async Task HandleMessageAsync(SocketMessage message)
     {
         Console.WriteLine($"RAW TYPE: {message.GetType().Name}");
         Console.WriteLine($"AUTHOR: {message.Author}");
