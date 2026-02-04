@@ -44,7 +44,7 @@ class Program
         Console.WriteLine($"AUTHOR: {message.Author}");
         Console.WriteLine($"ID: '{message.Author.Id}'");
 
-        if (message.Author.Id != "286626410146037771")
+        if (message.Author.Id != 286626410146037771)
             return;
 
         Console.WriteLine("Found: Daniel");
