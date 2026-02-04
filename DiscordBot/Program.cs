@@ -30,9 +30,18 @@ class Program
             return Task.CompletedTask;
         };
         _client.SlashCommandExecuted    +=  CommandHandler.Execute;
+        _client.MessageReceived         +=  HandleMessageAsync;
         _client.ButtonExecuted          +=  InteractionHandler.HandleButtonPress;
         
         await Task.Delay(-1);
+    }
+
+    public async Task HandleMessageAsync(SocketMessage message)
+    {
+        Console.WriteLine($"RAW TYPE: {message.GetType().Name}");
+        Console.WriteLine($"AUTHOR: {message.Author}");
+        Console.WriteLine($"CONTENT: '{message.Content}'");
+        return Task.CompletedTask;        
     }
 
     public async Task Client_Ready()
