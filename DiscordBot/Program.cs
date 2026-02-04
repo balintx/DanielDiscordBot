@@ -52,7 +52,7 @@ class Program
         if (_rng.NextDouble() > 0.7)
             return;
 
-        Console.WriteLine("70% proc")
+        Console.WriteLine("70% proc");
         int delayMs = _rng.Next(300, 15_001);
         Console.WriteLine($"Delay will be {delayMs} ms");
         await Task.Delay(delayMs);
