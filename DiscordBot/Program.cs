@@ -8,6 +8,8 @@ class Program
 {
     public static DiscordSocketClient _client;
 
+    private static readonly Random _rng = new();
+
     static async Task Main(string[] args)
     {
         var program = new Program();
@@ -41,6 +43,21 @@ class Program
         Console.WriteLine($"RAW TYPE: {message.GetType().Name}");
         Console.WriteLine($"AUTHOR: {message.Author}");
         Console.WriteLine($"ID: '{message.Author.Id}'");
+
+        if (message.Author.Id != "286626410146037771")
+            return;
+
+        Console.WriteLine("Found: Daniel");
+
+        if (_rng.NextDouble() > 0.7)
+            return;
+
+        Console.WriteLine("70% proc")
+        int delayMs = _rng.Next(300, 15_001);
+        Console.WriteLine($"Delay will be {delayMs} ms");
+        await Task.Delay(delayMs);
+        var emote = Emote.Parse("<:peclown:901598798810349598>");
+        await message.AddReactionAsync(emote);
     }
 
     public async Task Client_Ready()
