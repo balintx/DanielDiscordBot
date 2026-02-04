@@ -40,7 +40,7 @@ class Program
     {
         Console.WriteLine($"RAW TYPE: {message.GetType().Name}");
         Console.WriteLine($"AUTHOR: {message.Author}");
-        Console.WriteLine($"CONTENT: '{message.Content}'");
+        Console.WriteLine($"ID: '{message.Author.Id}'");
     }
 
     public async Task Client_Ready()
