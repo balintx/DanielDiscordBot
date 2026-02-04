@@ -41,7 +41,6 @@ class Program
         Console.WriteLine($"RAW TYPE: {message.GetType().Name}");
         Console.WriteLine($"AUTHOR: {message.Author}");
         Console.WriteLine($"CONTENT: '{message.Content}'");
-        return Task.CompletedTask;        
     }
 
     public async Task Client_Ready()
